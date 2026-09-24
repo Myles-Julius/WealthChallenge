@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Meridian AI Proposal Agent</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+    .container { display: flex; gap: 20px; }
+    .panel { flex: 1; min-width: 0; }
+    textarea { width: 100%; height: 320px; margin-bottom: 10px; box-sizing: border-box; }
+    button { padding: 8px 14px; background: #007bff; color: white; border: none; cursor: pointer; margin: 0 5px 5px 0; }
+    button:hover { background: #0056b3; }
+    pre { background: #f5f5f5; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre-wrap; }
+    .error { color: #c00; }
+    .success { color: #080; }
+  </style>
+</head>
+<body>
+  <h1>Meridian AI Proposal Agent</h1>
+  <p>Paste Portfolio Manager notes, generate a proposal, then open it in the proposal tool.</p>
+  <div class="container">
+    <div class="panel">
+      <h2>Adviser notes</h2>
+      <textarea id="notes" placeholder="Paste adviser notes here..."></textarea>
+      <div id="samples"></div>
+      <button onclick="generateProposal()">Generate proposal</button>
+    </div>
+    <div class="panel">
+      <h2>Generated proposal</h2>
+      <div id="result"></div>
+      <button onclick="openInTool()">Open in proposal tool</button>
+      <button onclick="copyCall()">Copy loadProposal(...) call</button>
+    </div>
+  </div>
+  <script>
+    let currentProposal = null;
+    let samples = [];
+
+    fetch('/api/samples').then(r => r.json()).then(list => {
+      samples = list;
+      document.getElementById('samples').innerHTML = list
+        .map((s, i) => '<button onclick="loadSample(' + i + ')">Sample ' + s.id + '</button>').join('');
+    });
+
+    function loadSample(i) { document.getElementById('notes').value = samples[i].notes; }
+
+    function showMessage(className, text) {
+      const p = document.createElement('p');
+      p.className = className;
+      p.textContent = text;
+      return p;
+    }
+
+    async function generateProposal() {
+      const resultDiv = document.getElementById('result');
+      resultDiv.replaceChildren(showMessage('', 'Generating proposal...'));
+      try {
+        const response = await fetch('/api/proposal', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ notes: document.getElementById('notes').value })
+        });
+        const data = await response.json();
+        if (data.error) {
+          resultDiv.replaceChildren(showMessage('error', 'Error: ' + data.error + (data.details ? ' (' + data.details + ')' : '')));
+          return;
+        }
+        currentProposal = data.proposal;
+        const pre = document.createElement('pre');
+        pre.textContent = JSON.stringify(data.proposal, null, 2);
+        resultDiv.replaceChildren(pre, data.validation.valid
+          ? showMessage('success', 'Proposal passes validation')
+          : showMessage('error', 'Validation warnings: ' + data.validation.errors.join('; ')));
+      } catch (error) {
+        resultDiv.replaceChildren(showMessage('error', 'Error: ' + error.message));
+      }
+    }
+
+    // Opens the proposal tool in a new tab and calls window.loadProposal once it has loaded.
+    function openInTool() {
+      if (!currentProposal) return alert('Generate a proposal first.');
+      const tool = window.open('/tool', '_blank');
+      const timer = setInterval(() => {
+        try {
+          if (tool.loadProposal) {
+            clearInterval(timer);
+            tool.loadProposal(currentProposal);
+          }
+        } catch (e) { /* tool page still loading */ }
+      }, 300);
+      setTimeout(() => clearInterval(timer), 20000);
+    }
+
+    function copyCall() {
+      if (!currentProposal) return;
+      navigator.clipboard.writeText('window.loadProposal(' + JSON.stringify(currentProposal) + ');');
+      alert('Copied to clipboard.');
+    }
+  </script>
+</body>
+</html>

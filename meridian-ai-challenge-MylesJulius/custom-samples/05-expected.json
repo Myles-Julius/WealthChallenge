@@ -1,0 +1,19 @@
+{
+  "clientName": "Mr Thabo Mokoena",
+  "introGreetTo": "client",
+  "applyModel": "income",
+  "needs": "Mr Mokoena, aged 62, has total assets of approximately R6.2 million. Around R1.5 million of this is liquid (unit trusts and a money-market account) and is the capital available for investment under this proposal; the balance comprises his home and a share in a family business, which are not readily investable. He wishes to draw an income of R30,000 a month (R360,000 a year) from his investments, and capital preservation is his primary objective.\n\nDrawing R360,000 a year from R1.5 million of investable capital is a withdrawal rate of roughly 24% a year. This is well above a sustainable level and would deplete the capital within a few years, which is at odds with the preservation objective. Before the income target is confirmed, it is important to establish whether other sources of income (a pension, rental income or drawings from the business) can reduce what the portfolio needs to provide, or whether the monthly figure can be revised.\n\n[TO CONFIRM WITH CLIENT: other sources of income (pension, rental, business drawings); whether the R30,000 monthly income figure can be revised; time horizon and health; choice of model portfolio; adviser fee.]",
+  "goalAssessment": {
+    "clientType": "Individual",
+    "currency": "ZAR",
+    "keyFigures": {
+      "totalInvestment": "1500000",
+      "incomeValue": "30000"
+    },
+    "rationale": "Mr Mokoena is in the spending phase of the investor life cycle: he needs income now and has stated that preservation of capital comes first. His ability to take risk is low because the income he requires is very large relative to his investable capital and his wider wealth is tied up in his home and a business interest that cannot readily be drawn on; his willingness is also low. The Meridian Income Portfolio is therefore the appropriate starting point. Its 50% allocation to South African fixed interest and 10% to cash provides a predictable, contractual income base with lower volatility than equities, while the 40% in local and international equities gives some protection against inflation over what could be a 20-year-plus retirement. Even this equity weight may feel high for a client who does not want to see the capital fall, and the trade-off between stability and inflation protection should be discussed. We would also recommend holding 12 to 24 months of income (R360,000 to R720,000) in cash so that growth assets are never sold in a market downturn to fund living costs."
+  },
+  "objective": {
+    "riskProfile": "Conservative. The client's ability to take risk is low: the income he requires is a very high proportion of his investable capital, his remaining wealth is illiquid, and no other income was mentioned. His willingness is also low, with capital preservation stated as the main aim. The portfolio must prioritise stability of capital and reliability of income, holding only enough growth assets to protect purchasing power over a long retirement.",
+    "strategyChars": "• Income base of government and investment-grade bonds providing predictable coupon income\n• Cash reserve equal to 12–24 months of income so that growth assets need not be sold in a downturn\n• Modest local and offshore equity sleeve to protect the real value of capital over the long term\n• Regular review of the withdrawal rate against capital, with rebalancing back to the target allocation"
+  }
+}
